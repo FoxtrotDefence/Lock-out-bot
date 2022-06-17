@@ -1,4 +1,3 @@
-#Region commands
 function Unlock ($Com) {
  if ([bool] (Get-ADUser -Filter { SamAccountName -eq $Com}) -eq $false){Send-TelegramMessage -Text "$Com user not found"}
  else{
@@ -24,11 +23,9 @@ function list {
     elseif(((Search-ADAccount -LockedOut).SamAccountName).count -eq 0){Send-TelegramMessage -Text ("No Locked Accounts")}      
 }
 
-
 #End Region
 
 clear-host
-$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 $BotToken = "" #Token
 $TelegramApiUri = "https://api.telegram.org/bot$($BotToken)"
 $AllowedID = "" #AllowedID
@@ -76,7 +73,7 @@ function Get-TelegramMessages {
             switch -wildcard ( $UserMessage )
                 {
                     "/unlock*" {unlock($UserMessage.Replace("/unlock ",""))}
-                    "/list" {list}
+                    "/list*" {list}
                     default {'Unnknown command'}
                 }
      
